@@ -1,7 +1,7 @@
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
-const socketIOClient = require('socket.io-client'); // Adicione esta linha para importar o cliente do Socket.IO
+const socketIOClient = require('socket.io-client'); // Cliente do Socket.IO
 
 const app = express();
 const server = http.createServer(app);
@@ -11,7 +11,7 @@ let musicInfo = {
   now: {
     artist: 'Desconhecido',
     music: 'Desconhecida',
-    cover: 'https://local.gazetafm.com.br/wp-content/themes/wp-theme-gazeta-fm/assets/img/default_player_cover.png'
+    cover: 'https://gazetafm.com.br/wp-content/themes/wp-theme-gazeta-fm/assets/img/default_player_cover.png'
   },
   next: {
     artist: 'Desconhecido',
@@ -22,6 +22,11 @@ let musicInfo = {
 // Configura o endpoint para retornar as informações das músicas em formato JSON
 app.get('/music-info', (req, res) => {
   console.log('Endpoint /music-info acessado');
+  
+  // Define o cabeçalho com a codificação UTF-8
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  
+  // Envia o JSON com a informação da música
   res.json(musicInfo);
 });
 
@@ -46,7 +51,7 @@ const socket = socketIOClient('https://app02.gazetafm.com.br', {
   }
 });
 
-// Adiciona um listener para o evento de atualização de músicas
+// Listener para o evento de atualização de músicas
 socket.on('atualizacao-musicas', (data) => {
   console.log('Dados recebidos do WebSocket:', data);
 
@@ -55,6 +60,7 @@ socket.on('atualizacao-musicas', (data) => {
     return;
   }
 
+  // Atualiza as informações das músicas recebidas, tratando espaços desnecessários
   musicInfo = {
     now: {
       artist: data.atual.interprete ? data.atual.interprete.trim() : 'Desconhecido',
