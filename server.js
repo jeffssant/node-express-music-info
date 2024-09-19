@@ -51,6 +51,10 @@ const socket = socketIOClient('https://app02.gazetafm.com.br', {
   }
 });
 
+function cleanString(str) {
+  return decodeURIComponent(escape(str));
+}
+
 socket.on('atualizacao-musicas', (data) => {
   console.log('Dados recebidos do WebSocket:', data);
 
@@ -62,13 +66,15 @@ socket.on('atualizacao-musicas', (data) => {
   // Atualiza as informações das músicas recebidas
   musicInfo = {
     now: {
-      artist: data.atual.interprete ? data.atual.interprete.trim() : '',
-      music: data.atual.musica ? data.atual.musica.trim() : 'Intervalo',
-      cover: data.atual.urlImagemPrincipal ? data.atual.urlImagemPrincipal.trim().replace(/60x60/, '250x250') || 'https://local.gazetafm.com.br/wp-content/themes/wp-theme-gazeta-fm/assets/img/default_player_cover.png' : 'https://gazetafm.com.br/wp-content/themes/wp-theme-gazeta-fm/assets/img/default_player_cover.png',
+      artist: cleanString(data.atual.interprete ? data.atual.interprete.trim() : ''),
+      music: cleanString(data.atual.musica ? data.atual.musica.trim() : 'Intervalo'),
+      cover: data.atual.urlImagemPrincipal 
+        ? cleanString(data.atual.urlImagemPrincipal.trim().replace(/60x60/, '250x250')) 
+        : 'https://gazetafm.com.br/wp-content/themes/wp-theme-gazeta-fm/assets/img/default_player_cover.png',
     },
     next: {
-      artist: data.seguinte.interprete ? data.seguinte.interprete.trim() : 'Desconhecido',
-      music: data.seguinte.musica ? data.seguinte.musica.trim() : 'Desconhecida'
+      artist: cleanString(data.seguinte.interprete ? data.seguinte.interprete.trim() : 'Desconhecido'),
+      music: cleanString(data.seguinte.musica ? data.seguinte.musica.trim() : 'Desconhecida')
     }
   };
 
