@@ -62,9 +62,9 @@ socket.on('atualizacao-musicas', (data) => {
   // Atualiza as informações das músicas recebidas
   musicInfo = {
     now: {
-      artist: data.atual.interprete ? data.atual.interprete.trim() : 'Intervalo',
-      music: data.atual.musica ? data.atual.musica.trim() : '',
-      cover: data.atual.cover ? data.atual.cover.trim() : 'https://gazetafm.com.br/wp-content/themes/wp-theme-gazeta-fm/assets/img/default_player_cover.png',
+      artist: data.atual.interprete ? data.atual.interprete.trim() : '',
+      music: data.atual.musica ? data.atual.musica.trim() : 'Intervalo',
+      cover: data.atual.urlImagemPrincipal ? data.atual.urlImagemPrincipal.trim() : 'https://gazetafm.com.br/wp-content/themes/wp-theme-gazeta-fm/assets/img/default_player_cover.png',
     },
     next: {
       artist: data.seguinte.interprete ? data.seguinte.interprete.trim() : 'Desconhecido',
