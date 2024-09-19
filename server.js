@@ -51,7 +51,6 @@ const socket = socketIOClient('https://app02.gazetafm.com.br', {
   }
 });
 
-// Listener para o evento de atualização de músicas
 socket.on('atualizacao-musicas', (data) => {
   console.log('Dados recebidos do WebSocket:', data);
 
@@ -60,12 +59,12 @@ socket.on('atualizacao-musicas', (data) => {
     return;
   }
 
-  // Atualiza as informações das músicas recebidas, tratando espaços desnecessários
+  // Atualiza as informações das músicas recebidas
   musicInfo = {
     now: {
       artist: data.atual.interprete ? data.atual.interprete.trim() : 'Desconhecido',
       music: data.atual.musica ? data.atual.musica.trim() : 'Desconhecida',
-      cover: (data.atual.urlsImagensAlternativas?.home || '').trim() || 'https://local.gazetafm.com.br/wp-content/themes/wp-theme-gazeta-fm/assets/img/default_player_cover.png'
+      cover: (data.atual.urlImagemPrincipal?.home || '').trim() || 'https://local.gazetafm.com.br/wp-content/themes/wp-theme-gazeta-fm/assets/img/default_player_cover.png'
     },
     next: {
       artist: data.seguinte.interprete ? data.seguinte.interprete.trim() : 'Desconhecido',
